@@ -47,16 +47,14 @@ const handleSearch = (value) => {
 };
 
 const bindEvent = () => {
-  DOM.$Input.addEventListener("keydown", (e) => {
+  DOM.$Input.addEventListener("keyup", (e) => {
     if (e.key === "Enter") {
       handleSearch(e.target.value);
-      canvasClear();
       draw(resultState);
     }
   });
   DOM.$Button.addEventListener("click", (e) => {
     handleSearch(e.target.value);
-    canvasClear();
   });
 };
 
