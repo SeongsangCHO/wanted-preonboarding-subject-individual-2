@@ -1,5 +1,5 @@
-import { countingConsonant } from "./countingConsonant.js";
-import { draw } from "./canvas.js";
+import { countingConsonant } from "./src/countingConsonant.js";
+import { draw } from "./src/canvas.js";
 
 import {
   DOM,
@@ -8,9 +8,9 @@ import {
   makeDomNode,
   appendNode,
   selectorNode,
-} from "./dom.js";
+} from "./src/dom.js";
 
-import { 초성 } from "./constant.js";
+import { 초성 } from "./src/constant.js";
 
 const inputState = {
   value: "",
