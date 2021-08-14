@@ -1,4 +1,6 @@
 import { countingConsonant } from "./countingConsonant.js";
+import { draw, canvasClear } from "./canvas.js";
+
 import {
   DOM,
   DOM_TAG,
@@ -34,23 +36,27 @@ const makeLayOut = () => {
   DOM.$Title = makeDomNode(DOM_TAG.h2, "title");
   DOM.$Title.innerText = "Mr.Camel 개인과제";
   appendNode(POSITION.first, DOM.$App, DOM.$Title);
+
+  DOM.$Canvas = makeDomNode(DOM_TAG.canvas, "canvas");
+  appendNode(POSITION.beyond, DOM.$App, DOM.$Canvas);
 };
 const handleSearch = (value) => {
   setInputState(value);
   const result = countingConsonant(inputState.value);
   setResultState(result);
 };
+
 const bindEvent = () => {
   DOM.$Input.addEventListener("keydown", (e) => {
     if (e.key === "Enter") {
-      console.log("enter");
       handleSearch(e.target.value);
-      console.log(resultState);
+      canvasClear();
+      draw(resultState);
     }
   });
   DOM.$Button.addEventListener("click", (e) => {
     handleSearch(e.target.value);
-    console.log(resultState);
+    canvasClear();
   });
 };
 
@@ -61,4 +67,3 @@ const init = () => {
 };
 
 init();
-console.log(DOM);

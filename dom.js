@@ -3,6 +3,7 @@ export const DOM_TAG = {
   button: "button",
   input: "input",
   h2: "h2",
+  canvas: "canvas"
 };
 // insertAdjacentElement(position, element)
 export const POSITION = {
