@@ -47,10 +47,11 @@ const handleSearch = (value) => {
 };
 
 const bindEvent = () => {
-  DOM.$Input.addEventListener("keyup", (e) => {
+  DOM.$Input.addEventListener("keypress", (e) => {
     if (e.key === "Enter") {
       handleSearch(e.target.value);
-      draw(resultState);
+
+      draw(resultState); //-> 입력글자에 따른 이미지 출력은 되나 애니메이션 적용을 못하겠다..
     }
   });
   DOM.$Button.addEventListener("click", (e) => {

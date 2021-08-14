@@ -3,6 +3,8 @@ import { 초성 } from "./constant.js";
 const drawState = {
   charData: [],
   intervalId: -1,
+  imgPathValueArray: [],
+  imgArray: [],
 };
 const imgRoute = {
   ㄱ: "./assets/.svg",
@@ -14,6 +16,7 @@ const setDrawCharArrayState = (nextState) => {
 export const canvasClear = () => {
   var ctx = selectorNode("canvas").getContext("2d"); //그리기 객체
   ctx.clearRect(0, 0, DOM.$Canvas.width, DOM.$Canvas.height);
+
   console.log("clear ctx");
 };
 const img = new Image();
@@ -38,33 +41,45 @@ const isVaildValue = (resultState) => {
   return count > 0 ? true : false;
 };
 
-const imgOnLoad = async () => {
-  var ctx = selectorNode("canvas").getContext("2d"); //그리기 객체
-  const 중복제거 = [];
+const createImagePath = () => {
   for (let i = 0; i < drawState.charData.length; i++) {
-    if (!중복제거.includes(drawState.charData[i])) {
-      중복제거.push(drawState.charData[i]);
+    if (!drawState.imgPathValueArray.includes(drawState.charData[i])) {
+      drawState.imgPathValueArray.push(drawState.charData[i]);
     }
   }
+};
 
-  const 이미지로드 = (idx) => {
-    return new Promise((resolve, reject) => {
-      const img = new Image();
-      img.onload = () => resolve(img);
-      img.src = `./assets/${중복제거[idx]}.svg`;
-    });
-  };
-  const getImage = (idx) => {
-    return 이미지로드(idx).then((img) => {
-      ctx.drawImage(img, 0 + idx * 100, 0);
-    });
-  };
-  중복제거.forEach((_, idx) => {
-    getImage(idx);
+const 이미지로드 = (idx) => {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.onload = () => resolve(img);
+    img.src = `./assets/${drawState.imgPathValueArray[idx]}.svg`;
   });
 };
 
+const paintImages = (idx) => {
+  var ctx = selectorNode("canvas").getContext("2d"); //그리기 객체
+  return 이미지로드(idx).then((img) => {
+    ctx.drawImage(img, 0 + idx * 25, 0);
+    drawState.imgArray.push(img); //[img(ㄱ.svg)]
+    console.log(drawState.imgArray);
+  });
+};
+
+const drawImages = async () => {
+  //[ㄱ,ㄴ,ㄷ]
+  const data = await drawState.imgPathValueArray.map(async (_, idx) => {
+    await paintImages(idx);
+    return drawState.imgArray;
+  });
+  // data == [img(ㄱ.svg), img(ㄴ.svg),img(ㄷ.svg)]
+  return data[0];
+};
+
 export function draw(resultState) {
+  drawState.charData = [];
+  drawState.imgPathValueArray = [];
+  drawState.imgArray = [];
   canvasClear();
   var ctx = selectorNode("canvas").getContext("2d"); //그리기 객체
 
@@ -75,10 +90,27 @@ export function draw(resultState) {
   if (drawState.intervalId !== -1) {
     clearInterval(drawState.intervalId);
   }
-  imgOnLoad();
-  console.log(ctx);
 
   createDrawCharArray(resultState);
+  createImagePath();
+  let y = 0;
+  let x = 0;
+  // console.log(drawImages());
+
+  drawImages().then(() => {
+    const animate = () => {
+      canvasClear();
+      for (let i = 0; i < drawState.imgArray.length; i++) {
+        ctx.drawImage(drawState.imgArray[i], i * 25, y);
+        ctx.beginPath();
+        ctx.stroke();
+      }
+      x++;
+      y++;
+    };
+    drawState.intervalId = setInterval(animate, 10);
+  });
+
   // ctx.beginPath();
   // var img = new Image();
 
@@ -99,5 +131,4 @@ export function draw(resultState) {
   //   x++;
   //   y++;
   // };
-  // drawState.intervalId = setInterval(animate, 10);
 }
