@@ -4,16 +4,16 @@ export const DOM_TAG = {
   input: "input",
   h2: "h2",
   canvas: "canvas",
-  img : "img",
+  img: "img",
+  ul: "ul",
+  li: "li",
 };
-// insertAdjacentElement(position, element)
 export const POSITION = {
   beyond: "beforebegin",
   first: "afterbegin",
   last: "beforeend",
   after: "afterend",
 };
-console.log("hello");
 
 export const makeDomNode = (domTag, className) => {
   const newNode = document.createElement(domTag);
@@ -28,10 +28,11 @@ export const appendNode = (pos, target, node) => {
 export const selectorNode = (identifier) => {
   return document.querySelector(identifier);
 };
+export const selectorAllNode = (identifier) => {
+  return document.querySelectorAll(identifier);
+};
 
-export const appendDomObject = () => {
-  
-}
+export const appendDomObject = () => {};
 export const DOM = {
   $App: selectorNode("#app"),
 };

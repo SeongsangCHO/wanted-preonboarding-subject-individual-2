@@ -7,7 +7,6 @@ const makeImageNode = () => {
     imageObject[char] = makeDomNode(DOM_TAG.img, "charImages");
     imageObject[char].src = `./assets/${char}.svg`;
   });
-  console.log(imageObject);
   return imageObject;
 };
 
@@ -18,6 +17,7 @@ const drawState = {
   imgArray: [],
   randomLocX: [],
   randomLocY: [],
+  randomSpeed: [],
 };
 const imgRoute = {
   ㄱ: "./assets/.svg",
@@ -29,8 +29,6 @@ const setDrawCharArrayState = (nextState) => {
 export const canvasClear = () => {
   var ctx = selectorNode("canvas").getContext("2d"); //그리기 객체
   ctx.clearRect(0, 0, DOM.$Canvas.width, DOM.$Canvas.height);
-
-  console.log("clear ctx");
 };
 const img = new Image();
 
@@ -61,18 +59,22 @@ const createImagePath = () => {
     }
   }
   for (let i = 0; i < drawState.imgPathValueArray.length; i++) {
-    drawState.randomLocX.push(Math.random() * 500);
-    drawState.randomLocY.push(Math.random() * 100);
+    drawState.randomLocX.push(Math.random() * 750);
+    drawState.randomLocY.push(Math.random() * 300);
+    drawState.randomSpeed.push(Math.random() * 10);
   }
-  console.log(window.innerWidth, window.innerHeight);
 };
 
-export async function draw(resultState) {
+const initState = () => {
   drawState.charData = [];
   drawState.imgPathValueArray = [];
   drawState.imgArray = [];
   drawState.randomLocX = [];
   drawState.randomLocY = [];
+  drawState.randomSpeed = [];
+};
+export async function draw(resultState) {
+  initState();
   canvasClear();
 
   var ctx = selectorNode("canvas").getContext("2d"); //그리기 객체
@@ -88,8 +90,6 @@ export async function draw(resultState) {
   createDrawCharArray(resultState);
   createImagePath();
   let y = 0;
-  let x = 0;
-  console.log(drawState.randomLocY);
 
   const animate = () => {
     canvasClear();
@@ -97,16 +97,18 @@ export async function draw(resultState) {
       ctx.drawImage(
         imageObj[char],
         drawState.randomLocX[i],
-        500 + drawState.randomLocY[i] - y,
+        800 + drawState.randomLocY[i] - y,
         25,
         25
       );
       ctx.beginPath();
       ctx.stroke();
     });
-    x++;
-    y++;
+
+    y += 5;
+    if (y === 650) {
+      clearInterval(drawState.intervalId);
+    }
   };
-  // animate();
   drawState.intervalId = setInterval(animate, 10);
 }
