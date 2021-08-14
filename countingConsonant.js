@@ -9,22 +9,7 @@ const 자음정규식 = /^[ㄱ-ㅎ]+$/;
 const 완성글자정규식 = /^[가-힣]+$/;
 const filtered = input.split("").filter((item) => isKoreanReg.test(item));
 
-const 초성dic = {
-  "ㄱ": 0,
-  "ㄴ": 0,
-  "ㄷ": 0,
-  "ㄹ": 0,
-  "ㅁ": 0,
-  "ㅂ": 0,
-  "ㅅ": 0,
-  "ㅇ": 0,
-  "ㅈ": 0,
-  "ㅊ": 0,
-  "ㅋ": 0,
-  "ㅌ": 0,
-  "ㅍ": 0,
-  "ㅎ": 0,
-}
+
 
 const 초성인덱스 = (code) => {
   return Math.floor(code / 588);
@@ -38,7 +23,30 @@ const 종성인덱스 = (code) => {
   return code % 28;
 }
 
-export const countingConsonant = (filtered) => {
+export const countingConsonant = (inputValue) => {
+  const 초성dic = {
+    "ㄲ": 0,
+    "ㄸ": 0,
+    "ㅃ": 0,
+    "ㅆ": 0,
+    "ㅉ": 0,
+    "ㄱ": 0,
+    "ㄴ": 0,
+    "ㄷ": 0,
+    "ㄹ": 0,
+    "ㅁ": 0,
+    "ㅂ": 0,
+    "ㅅ": 0,
+    "ㅇ": 0,
+    "ㅈ": 0,
+    "ㅊ": 0,
+    "ㅋ": 0,
+    "ㅌ": 0,
+    "ㅍ": 0,
+    "ㅎ": 0,
+  }
+  const filtered = inputValue.split("").filter((item) => isKoreanReg.test(item));
+  
   const 완성글자만 = filtered.filter((item) => 완성글자정규식.test(item));
   완성글자만.forEach((char) => {
     const code = char.charCodeAt(0) - 44032;
