@@ -28,3 +28,8 @@ div {
   margin: 0 auto;
   z-index: -1;
 }
+
+img {
+  width: 25px;
+  height: 25px;
+}

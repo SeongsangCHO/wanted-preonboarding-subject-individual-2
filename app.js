@@ -38,6 +38,8 @@ const makeLayOut = () => {
   appendNode(POSITION.first, DOM.$App, DOM.$Title);
 
   DOM.$Canvas = makeDomNode(DOM_TAG.canvas, "canvas");
+  DOM.$Canvas.setAttribute("width", "500px");
+  DOM.$Canvas.setAttribute("height", "500px");
   appendNode(POSITION.beyond, DOM.$App, DOM.$Canvas);
 };
 const handleSearch = (value) => {
@@ -47,15 +49,16 @@ const handleSearch = (value) => {
 };
 
 const bindEvent = () => {
-  DOM.$Input.addEventListener("keypress", (e) => {
+  DOM.$Input.addEventListener("keyup", (e) => {
+    setInputState(e.target.value);
     if (e.key === "Enter") {
       handleSearch(e.target.value);
-
-      draw(resultState); //-> 입력글자에 따른 이미지 출력은 되나 애니메이션 적용을 못하겠다..
+      draw(resultState);
     }
   });
   DOM.$Button.addEventListener("click", (e) => {
-    handleSearch(e.target.value);
+    handleSearch(inputState.value);
+    draw(resultState);
   });
 };
 
