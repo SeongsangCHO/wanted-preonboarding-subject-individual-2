@@ -72,8 +72,9 @@ const handleSearch = (value) => {
 };
 
 const bindEvent = () => {
-  DOM.$Input.addEventListener("keypress", (e) => {
+  DOM.$Input.addEventListener("keyup", (e) => {
     setInputState(e.target.value);
+
     if (e.key === "Enter") {
       handleSearch(e.target.value);
       draw(resultState);
